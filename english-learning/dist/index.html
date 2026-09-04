@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#071633" />
+    <meta name="description" content="为 3 岁零基础孩子设计的每日 15 分钟英语启蒙互动课。" />
+    <title>Little English Adventure</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="sky" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="brand" aria-label="Little English Adventure">
+          <span class="brand-mark">★</span>
+          <div><strong>Little English</strong><small>Adventure</small></div>
+        </div>
+        <div class="status-pill" aria-label="连续学习天数">
+          <span aria-hidden="true">🔥</span><strong id="streakCount">1</strong><small>day</small>
+        </div>
+      </header>
+
+      <section class="lesson-card" id="learnView" aria-labelledby="lessonTitle">
+        <div class="lesson-intro">
+          <div class="lesson-copy">
+            <div class="eyebrow"><span id="dayLabel">DAY 1</span><i></i><span id="themeLabel">HELLO</span></div>
+            <h1 id="lessonTitle">Hello, little explorer!</h1>
+            <p id="lessonGoal">今天只做一件事：开心地听见并说出 Hello。</p>
+            <button class="say-button" id="helloButton" type="button">
+              <span class="sound-ring" aria-hidden="true">♪</span>
+              <span><small>点我听一听</small><strong id="helloPhrase">Hello!</strong></span>
+            </button>
+          </div>
+          <div class="mascot-wrap">
+            <div class="orbit" aria-hidden="true"></div>
+            <img src="assets/astro-bear.webp" alt="挥手说你好的太空小熊" />
+          </div>
+        </div>
+
+        <div class="mission-row">
+          <div><span class="mission-number">1</span><div><small>LISTEN & TAP</small><strong>听一听，点一点</strong></div></div>
+          <span id="wordProgress">0 / 3</span>
+        </div>
+        <div class="word-grid" id="wordGrid" aria-live="polite"></div>
+
+        <section class="move-card" aria-labelledby="moveTitle">
+          <div class="move-icon" id="moveEmoji" aria-hidden="true">👋</div>
+          <div class="move-copy"><small>MOVE & SAY</small><h2 id="moveTitle">Wave and say</h2><p id="movePrompt">一起挥挥手，说：Hello!</p></div>
+          <button class="round-audio" id="actionButton" type="button" aria-label="播放动作口令">▶</button>
+        </section>
+
+        <section class="chant-card" aria-labelledby="chantTitle">
+          <div class="chant-heading"><span aria-hidden="true">♫</span><div><small>MINI CHANT</small><h2 id="chantTitle">跟着节奏说</h2></div></div>
+          <div class="chant-lines" id="chantLines"></div>
+          <button class="chant-button" id="chantButton" type="button"><span>▶</span> Play the chant</button>
+        </section>
+
+        <section class="quiz-card" id="quizCard" aria-labelledby="quizTitle">
+          <div class="mission-row compact">
+            <div><span class="mission-number">2</span><div><small>FIND IT</small><strong id="quizTitle">听声音，找一找</strong></div></div>
+          </div>
+          <button class="quiz-prompt" id="quizPrompt" type="button"><span aria-hidden="true">🔊</span><strong>Listen again</strong></button>
+          <div class="quiz-options" id="quizOptions"></div>
+          <p class="quiz-feedback" id="quizFeedback" aria-live="assertive"></p>
+        </section>
+
+        <button class="finish-button" id="finishButton" type="button" disabled>
+          <span>★</span><strong>完成今天的探险</strong><small>Complete today</small>
+        </button>
+      </section>
+
+      <section class="parent-view" id="parentView" hidden aria-labelledby="parentTitle">
+        <div class="parent-heading">
+          <div><div class="eyebrow">FOR GROWN-UPS</div><h1 id="parentTitle">家长陪练台</h1><p>每天主课 15 分钟，再把 3 个英语口令自然放进生活。</p></div>
+          <div class="big-stat"><strong id="totalStars">0</strong><small>颗星星</small></div>
+        </div>
+
+        <div class="coach-grid">
+          <article class="coach-card session-plan"><h2>今天怎么陪</h2><ol id="sessionSteps"></ol></article>
+          <article class="coach-card rules"><h2>三条重要原则</h2><ul><li><b>先听后说</b><span>孩子只听不说也算学习，不逼读。</span></li><li><b>不用翻译考试</b><span>做动作、指实物，让英文直接连接意思。</span></li><li><b>当天反复出现</b><span>吃饭、洗手、睡前各自然说一次。</span></li></ul></article>
+        </div>
+
+        <article class="coach-card week-card">
+          <div class="card-title-row"><div><small>WEEKLY PATH</small><h2>本周探险地图</h2></div><span id="weekProgressText">0 / 7 完成</span></div>
+          <div class="week-strip" id="weekStrip"></div>
+          <div class="day-nav"><button id="prevDay" type="button">← 上一天</button><button id="todayDay" type="button">回到今天</button><button id="nextDay" type="button">下一天 →</button></div>
+        </article>
+
+        <article class="coach-card roadmap-card">
+          <div class="card-title-row"><div><small>1–2 YEAR ROADMAP</small><h2>从听懂到自然交流</h2></div><span>循序渐进</span></div>
+          <div class="roadmap">
+            <div><b>01</b><strong>0–3 个月</strong><span>听懂家庭高频口令，建立英语安全感</span></div>
+            <div><b>02</b><strong>4–8 个月</strong><span>用单词与短语表达需要，加入绘本共读</span></div>
+            <div><b>03</b><strong>9–14 个月</strong><span>形成 3–5 词句子，完成简单问答</span></div>
+            <div><b>04</b><strong>15–24 个月</strong><span>围绕生活、图片和故事持续对话</span></div>
+          </div>
+          <p class="reality-note">“全英文交流”是方向，不是机械的时间承诺。稳定、愉快的每日输入与真实互动，比背多少单词更重要。</p>
+        </article>
+
+        <button class="reset-button" id="resetButton" type="button">重新开始学习计划</button>
+      </section>
+
+      <nav class="bottom-nav" aria-label="页面导航">
+        <button class="active" data-view="learn" type="button"><span aria-hidden="true">🚀</span><strong>今天学习</strong></button>
+        <button data-view="parent" type="button"><span aria-hidden="true">☀️</span><strong>家长陪练</strong></button>
+      </nav>
+    </main>
+
+    <div class="celebration" id="celebration" hidden role="dialog" aria-modal="true" aria-labelledby="celebrationTitle">
+      <div class="celebration-card">
+        <div class="star-burst" aria-hidden="true">★</div>
+        <small>MISSION COMPLETE</small>
+        <h2 id="celebrationTitle">Amazing!</h2>
+        <p>今天的英语探险完成啦！</p>
+        <button id="closeCelebration" type="button">High five! ✋</button>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
