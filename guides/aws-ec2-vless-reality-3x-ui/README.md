@@ -120,6 +120,8 @@ bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/v3.8.5/install.
 
 ![四次关键输入：1、n、4、y](assets/install-choices.svg)
 
+> **安装输入速记：1 → n → 4 → y。** 对应 SQLite → 随机面板端口 → Skip SSL → 限制面板 localhost。每遇到一个提示才输入一个值。
+
 **严格按照屏幕上逐个出现的提问输入。不要一口气粘贴 `1 n 4 y`。**
 
 | 安装器提问（英文关键词） | 你输入 | 为什么 |
