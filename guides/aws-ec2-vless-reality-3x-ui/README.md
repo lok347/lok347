@@ -56,7 +56,7 @@
 
 ---
 
-## 第 2 步｜Mac 终端登录 EC2
+## 第 2 步｜Mac 终端登录 EC2，准备 Ubuntu 环境（尚未安装 VLESS）
 
 打开 Mac 自带「终端」，先复制下面两行，并**改成你自己的 IP 和密钥文件名**：
 
@@ -86,13 +86,17 @@ Are you sure you want to continue connecting (yes/no/[fingerprint])?
 
 登录 EC2 成功后，看到类似 `ubuntu@ip-10-xx-xx-xx:~$` 的提示符。**从这一步开始，你输入的命令是在 EC2 服务器上运行，而不是在 Mac 上运行。**
 
-继续复制：
+**以下三条命令只是在准备 Ubuntu 环境，还没有安装 VLESS：** `sudo -i` 切换管理员身份、`apt update` 刷新软件包索引、`apt install` 安装 curl 下载工具及 CA 根证书组件。
+
+继续逐条复制：
 
 ~~~bash
 sudo -i
 apt update
 apt install -y curl ca-certificates
 ~~~
+
+> **不要把本步骤误认为 VLESS 已安装。** 下一步才会安装 3x-ui 面板及 Xray-core；第 5 步还需在面板内新增、启用 VLESS + REALITY 入站，才能让客户端实际连接。
 
 检查 443 是否已被其他软件占用：
 
@@ -106,7 +110,7 @@ ss -lntp | grep ':443' || true
 
 ---
 
-## 第 3 步｜安装 3x-ui：四次关键输入
+## 第 3 步｜真正安装 3x-ui + Xray-core：四次关键输入
 
 本文复现使用过的 **3x-ui v3.8.5** 安装流程。首次全新部署可在 **EC2 Shell** 执行下面的官方项目安装命令：
 
