@@ -24,8 +24,8 @@
 
 | 类型 | 例子 | 要怎么做 |
 | --- | --- | --- |
-| **需要自己替换** | EC2 公网 IP、\`aws-ec2.pem\` 文件名、面板随机端口、随机路径、UUID、密钥 | 使用**你自己的实际值** |
-| **本次可照填的示例配置** | TCP 443、VLESS、REALITY、\`xtls-rprx-vision\`、\`Min Client Ver = 1.0.0\` | 按本文操作；目标域名仍需通过实际扫描/连接测试确认 |
+| **需要自己替换** | EC2 公网 IP、`aws-ec2.pem` 文件名、面板随机端口、随机路径、UUID、密钥 | 使用**你自己的实际值** |
+| **本次可照填的示例配置** | TCP 443、VLESS、REALITY、`xtls-rprx-vision`、`Min Client Ver = 1.0.0` | 按本文操作；目标域名仍需通过实际扫描/连接测试确认 |
 
 ---
 
@@ -33,10 +33,10 @@
 
 1. 进入 [AWS EC2 控制台](https://console.aws.amazon.com/ec2/home)，右上角选择 **Asia Pacific (Singapore)**（若要 Oregon，选择 **US West (Oregon)**）。
 2. 点击 **Instances（实例）→ Launch instances（启动实例）**。
-3. 在 **Name** 输入 \`sg-vless\`（名称可自定义）。
+3. 在 **Name** 输入 `sg-vless`（名称可自定义）。
 4. 在 **Application and OS Images / AMI** 选择 **Ubuntu Server LTS**（22.04 / 24.04 等兼容版本）。
 5. 在 **Instance type** 选预算内合适的规格；不要默认所有实例都在 AWS 免费套餐内。
-6. 在 **Key pair** 新建或选择密钥对。新建时选 PEM 格式，下载并保存到 Mac 的 \`Downloads\`。本文以文件名 \`aws-ec2.pem\` 为例。
+6. 在 **Key pair** 新建或选择密钥对。新建时选 PEM 格式，下载并保存到 Mac 的 `Downloads`。本文以文件名 `aws-ec2.pem` 为例。
 7. 配置 **Network settings / Security Group** 的入站规则，确保有下表两条规则：
 
 | 入站类型 | 协议 / 端口 | 来源 | 用途 |
@@ -65,7 +65,7 @@ export EC2_IP='在这里填入你的EC2公网IPv4'
 export EC2_KEY="$HOME/Downloads/aws-ec2.pem"
 ~~~
 
-> \`EC2_IP\` 的值不是域名样例，不是私网 IP；应是你在 AWS 实例详情页复制的公网 IPv4。如果你的 PEM 文件不叫 \`aws-ec2.pem\`，请修改第二行的文件名。
+> `EC2_IP` 的值不是域名样例，不是私网 IP；应是你在 AWS 实例详情页复制的公网 IPv4。如果你的 PEM 文件不叫 `aws-ec2.pem`，请修改第二行的文件名。
 
 接着复制并执行：
 
@@ -80,11 +80,11 @@ ssh -i "$EC2_KEY" "ubuntu@$EC2_IP"
 Are you sure you want to continue connecting (yes/no/[fingerprint])?
 ~~~
 
-先核对自己确实连接的是目标 EC2 主机，确认后键入 \`yes\` 回车。
+先核对自己确实连接的是目标 EC2 主机，确认后键入 `yes` 回车。
 
 ![Mac 终端成功登录的示意](assets/terminal-success.svg)
 
-登录 EC2 成功后，看到类似 \`ubuntu@ip-10-xx-xx-xx:~$\` 的提示符。**从这一步开始，你输入的命令是在 EC2 服务器上运行，而不是在 Mac 上运行。**
+登录 EC2 成功后，看到类似 `ubuntu@ip-10-xx-xx-xx:~$` 的提示符。**从这一步开始，你输入的命令是在 EC2 服务器上运行，而不是在 Mac 上运行。**
 
 继续复制：
 
@@ -102,7 +102,7 @@ ss -lntp | grep ':443' || true
 
 如果输出显示其他服务占用了 443，应先定位原因；不要强行覆盖现有服务。
 
-**✅ 这一步成功的标志：** 终端已进入 EC2 的 Ubuntu/root Shell，且 \`apt\` 命令完成。
+**✅ 这一步成功的标志：** 终端已进入 EC2 的 Ubuntu/root Shell，且 `apt` 命令完成。
 
 ---
 
@@ -120,14 +120,14 @@ bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/v3.8.5/install.
 
 ![四次关键输入：1、n、4、y](assets/install-choices.svg)
 
-**严格按照屏幕上逐个出现的提问输入。不要一口气粘贴 \`1 n 4 y\`。**
+**严格按照屏幕上逐个出现的提问输入。不要一口气粘贴 `1 n 4 y`。**
 
 | 安装器提问（英文关键词） | 你输入 | 为什么 |
 | --- | --- | --- |
-| \`Database Selection\`：1) SQLite / 2) PostgreSQL | **\`1\`** | 单机使用 SQLite |
-| \`Customize the Panel Port settings?\` | **\`n\`** | 安装器自动生成随机管理端口 |
-| \`Choose SSL certificate setup method\` | **\`4\`** | 四选一中第 4 项：\`Skip SSL\` |
-| \`Bind the panel to 127.0.0.1 only?\` | **\`y\`** | 仅允许本机监听，后续走 SSH 隧道 |
+| `Database Selection`：1) SQLite / 2) PostgreSQL | **`1`** | 单机使用 SQLite |
+| `Customize the Panel Port settings?` | **`n`** | 安装器自动生成随机管理端口 |
+| `Choose SSL certificate setup method` | **`4`** | 四选一中第 4 项：`Skip SSL` |
+| `Bind the panel to 127.0.0.1 only?` | **`y`** | 仅允许本机监听，后续走 SSH 隧道 |
 
 其中 **SSL 四选一** 的完整含义：
 
@@ -140,7 +140,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/mhsanaei/3x-ui/v3.8.5/install.
 请输入：4
 ~~~
 
-**注意：\`4\` 是“跳过面板 HTTPS 证书”，不是关闭 REALITY 安全层。** 只有后面选择 \`y\` 限制面板只监听 \`127.0.0.1\`，并且**不在 EC2 安全组开放面板端口**时，这套 SSH 隧道方案才合理。
+**注意：`4` 是“跳过面板 HTTPS 证书”，不是关闭 REALITY 安全层。** 只有后面选择 `y` 限制面板只监听 `127.0.0.1`，并且**不在 EC2 安全组开放面板端口**时，这套 SSH 隧道方案才合理。
 
 安装结束时，请把以下信息存放到自己的密码管理器或安全笔记中：
 
@@ -185,13 +185,13 @@ ssh -i "$EC2_KEY" \
 http://127.0.0.1:18080/你的随机访问路径/
 ~~~
 
-把 \`你的随机访问路径\` 换成安装器输出的实际路径，末尾斜杠按安装器给出的真实 URL 保留。输入安装器生成的**面板账号/密码**登录。
+把 `你的随机访问路径` 换成安装器输出的实际路径，末尾斜杠按安装器给出的真实 URL 保留。输入安装器生成的**面板账号/密码**登录。
 
 ![SSH 隧道关系示意](assets/ssh-tunnel.svg)
 
-> **别混淆三个端口：** \`22\` 是 EC2 SSH 管理；\`443\` 是 VLESS/REALITY 代理；\`18080\` 是 Mac 本地临时入口。还有一个安装器随机生成的 **EC2 面板端口**，只通过 SSH 隧道连接，**不需要公网放行**。
+> **别混淆三个端口：** `22` 是 EC2 SSH 管理；`443` 是 VLESS/REALITY 代理；`18080` 是 Mac 本地临时入口。还有一个安装器随机生成的 **EC2 面板端口**，只通过 SSH 隧道连接，**不需要公网放行**。
 
-**✅ 这一步成功的标志：** Mac 浏览器能通过 \`127.0.0.1:18080\` 登录 3x-ui 面板。
+**✅ 这一步成功的标志：** Mac 浏览器能通过 `127.0.0.1:18080` 登录 3x-ui 面板。
 
 ---
 
@@ -201,16 +201,16 @@ http://127.0.0.1:18080/你的随机访问路径/
 
 | 3x-ui 字段 | 本教程输入 |
 | --- | --- |
-| Remark | \`AWS-SG-Reality\`（可自定义） |
+| Remark | `AWS-SG-Reality`（可自定义） |
 | Enable | 开启 |
 | Protocol | **VLESS** |
-| Port | **\`443\`** |
-| Listen IP | 保持默认全接口，不要填 \`127.0.0.1\` |
+| Port | **`443`** |
+| Listen IP | 保持默认全接口，不要填 `127.0.0.1` |
 | Clients | 添加客户端，并生成自己的 UUID |
-| Flow | **\`xtls-rprx-vision\`** |
+| Flow | **`xtls-rprx-vision`** |
 | Transport / Network | **TCP / RAW** |
 | Security | **REALITY** |
-| Fingerprint（客户端） | **\`chrome\`** |
+| Fingerprint（客户端） | **`chrome`** |
 
 ### 5.1 REALITY 内的关键参数（不要漏掉）
 
@@ -218,19 +218,19 @@ http://127.0.0.1:18080/你的随机访问路径/
 
 | 字段 | 具体填写或操作 | 小白提醒 |
 | --- | --- | --- |
-| Target | \`aws.amazon.com:443\`（示例） | 不是你的 EC2 IP |
-| Server Names / SNI | \`aws.amazon.com\`（示例） | 必须与目标握手兼容；客户端同样使用此 SNI |
-| Max Time Diff (ms) | \`0\` | 按本次使用示例 |
-| **Min Client Ver** | **\`1.0.0\`** | **必须按本次实操填写，不要留空** |
-| Max Client Ver | 留空 | 不要把 \`1.0.0\` 错填到这里 |
-| Xver | \`0\` | 按本次示例 |
+| Target | `aws.amazon.com:443`（示例） | 不是你的 EC2 IP |
+| Server Names / SNI | `aws.amazon.com`（示例） | 必须与目标握手兼容；客户端同样使用此 SNI |
+| Max Time Diff (ms) | `0` | 按本次使用示例 |
+| **Min Client Ver** | **`1.0.0`** | **必须按本次实操填写，不要留空** |
+| Max Client Ver | 留空 | 不要把 `1.0.0` 错填到这里 |
+| Xver | `0` | 按本次示例 |
 | Private/Public Key | 点击 **Generate / 生成密钥对** | 私钥留在服务端；客户端用公钥 |
 | Short IDs | 点击 **Generate / 随机生成** | 导入客户端时要匹配其中一个合法 Short ID |
-| SpiderX | \`/\` | 如客户端有该字段，按服务端配置 |
+| SpiderX | `/` | 如客户端有该字段，按服务端配置 |
 
 ![REALITY 脱敏字段示意：Min Client Ver = 1.0.0](assets/reality-field-example.svg)
 
-**⚠️ 我们实际踩过的坑：\`Min Client Ver\` 不填写时，出现过客户端连不通；填写 \`1.0.0\` 后使用正常。** 这条是对本次历史成功配置的复现要求，不代表所有版本的 REALITY 都一定要求非空。字段表示**允许的最低客户端版本**，并非 3x-ui 面板版本，更不是强制安装 Xray 1.0.0。
+**⚠️ 我们实际踩过的坑：`Min Client Ver` 不填写时，出现过客户端连不通；填写 `1.0.0` 后使用正常。** 这条是对本次历史成功配置的复现要求，不代表所有版本的 REALITY 都一定要求非空。字段表示**允许的最低客户端版本**，并非 3x-ui 面板版本，更不是强制安装 Xray 1.0.0。
 
 确认字段后**保存入站并启用**。如果入站有错误提示，不要跳过；先核对 443 是否被占用、目标/SNI 是否兼容、Flow 与 REALITY 参数是否配对。
 
@@ -257,17 +257,17 @@ sudo ss -lntp | grep ':443'
 
 | 客户端字段 | 应该是什么 |
 | --- | --- |
-| Address / Server | **你的 EC2 公网 IP**（绝不是 \`127.0.0.1\`） |
-| Port | \`443\` |
+| Address / Server | **你的 EC2 公网 IP**（绝不是 `127.0.0.1`） |
+| Port | `443` |
 | Type | VLESS |
 | Security | REALITY |
 | UUID / ID | 与面板该客户端一致 |
-| Flow | \`xtls-rprx-vision\` |
+| Flow | `xtls-rprx-vision` |
 | Transport | TCP / RAW |
 | SNI | 与 REALITY 设置中选定的 SNI 一致 |
 | Public Key / pbk | **REALITY 公钥**，不是私钥 |
 | Short ID / sid | 服务端已生成的其中一个匹配值 |
-| Fingerprint | \`chrome\` |
+| Fingerprint | `chrome` |
 
 **最终验收清单：**
 
@@ -286,9 +286,9 @@ sudo ss -lntp | grep ':443'
 
 **Q：两地部署是不是完全一样？** 创建 EC2、安装面板、443 入站、REALITY、客户端导入步骤基本相同；但旧记录中 SG 的 Xray-core **26.9.9** 已实测正常，Oregon 曾需回退到 **26.6.27**。版本属于不同节点的历史验证结果，**不要对正在使用的 SG 主动照搬 Oregon 的降级操作**。详情见 [附录](troubleshooting.md)。
 
-**Q：面板打不开怎么办？** 先查 SSH 隧道的远端端口、Mac \`18080\`、随机访问路径是否正确。不要为图方便把面板 HTTP 端口开放到公网。
+**Q：面板打不开怎么办？** 先查 SSH 隧道的远端端口、Mac `18080`、随机访问路径是否正确。不要为图方便把面板 HTTP 端口开放到公网。
 
-**Q：\`Min Client Ver = 1.0.0\` 是 3x-ui 的版本吗？** 不是，它是 REALITY 的最低客户端版本字段；本次历史配置明确填写了这一项。
+**Q：`Min Client Ver = 1.0.0` 是 3x-ui 的版本吗？** 不是，它是 REALITY 的最低客户端版本字段；本次历史配置明确填写了这一项。
 
 **Q：有没有真正的一键全自动安装？** 本文是**可复制的交互式逐步安装教程**，不是无人值守的全自动脚本。AWS 账号、EC2 创建、密钥保存、敏感参数生成和客户端导入仍需用户自己操作，以免不明脚本管理云账号或暴露秘钥。
 
