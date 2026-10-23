@@ -37,7 +37,7 @@
 4. 在 **Application and OS Images / AMI** 选择 **Ubuntu Server LTS**（22.04 / 24.04 等兼容版本）。
 5. 在 **Instance type** 选预算内合适的规格；不要默认所有实例都在 AWS 免费套餐内。
 6. 在 **Key pair** 新建或选择密钥对。新建时选 PEM 格式，下载并保存到 Mac 的 `Downloads`。本文以文件名 `aws-ec2.pem` 为例。
-7. 配置 **Network settings / Security Group** 的入站规则，确保有下表两条规则：
+7. 在 **Network settings / 网络设置** 中确认实例位于具有互联网路由的公网子网，**Auto-assign public IP（自动分配公有 IPv4）**已启用；如果你使用自建 VPC/子网，还需检查路由表和 Internet Gateway。然后配置 **Security Group** 的入站规则，确保有下表两条规则：
 
 | 入站类型 | 协议 / 端口 | 来源 | 用途 |
 | --- | --- | --- | --- |
