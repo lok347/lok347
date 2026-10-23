@@ -249,10 +249,25 @@ sudo x-ui
 | Server Names / SNI | 例如 **www.microsoft.com** | 应与目标域名及真实握手条件兼容 |
 | Fingerprint / uTLS | **chrome** | 客户端对应设置也用 chrome |
 | Xver | **0** | 当时配置习惯 |
+| **Min Client Ver / 最低客户端版本** | **`1.0.0`（明确填写，不留空）** | **本次 SG/Oregon 部署经验中的关键项：曾遇到留空无法连通；填写 `1.0.0` 后可用。它是 REALITY 服务端的客户端最低版本配置，不是 3x-ui 面板版本。** |
+| Max Client Ver / 最高客户端版本 | 留空 | 本次部署示例未设置上限，不要误把版本上限填成 `1.0.0` |
 | SpiderX | **/** | 当时配置习惯（部分客户端展示） |
 | Private/Public Key | 点击**生成** | 服务器保留 REALITY 私钥，客户端使用其对应公钥 |
 | Short ID | 点击**生成** | 客户端须与实际服务端生成的值一致 |
 | Sniffing / Routing | 默认先保持简单 | 故障定位前不额外添加复杂分流 |
+
+### 5.1 易漏的关键输入：Min Client Ver 必填 `1.0.0`（本次实操）
+
+在添加/编辑入站的 **REALITY 设置**下，往下滚动至 `Max Time Diff (ms)` 和 `Short IDs` 之间，找到 **`Min Client Ver`** 输入框：
+
+~~~text
+Min Client Ver : 1.0.0    ← 本次部署需要明确填写
+Max Client Ver :          ← 保持为空
+~~~
+
+**来自本次真实排障反馈：该字段留空时遇到客户端无法连通；填写 `1.0.0` 后应连同其他参数一起重新验证。** 为了复现这次 SG/Oregon 的工作配置，本教程将其列为**必须执行的操作**，不要只生成 Short IDs 而遗漏它。
+
+`Min Client Ver` 是 REALITY 的**最低客户端版本限制**，`1.0.0` 是配置示例值，**不是要求安装 3x-ui v1.0.0，也不是 Xray-core 版本号**。是否在其他版本和所有客户端上都必须填写，尚未做跨版本验证；不能推论“REALITY 不填此项一律不能连接”。如果设置后仍无法访问，继续排查 UUID、SNI、Short ID、公钥、Flow、Fingerprint 和客户端兼容性。
 
 **不要把 Target 当成自己的 EC2 IP**；REALITY 的目标/SNI应选可用、TLS 条件匹配的实际 HTTPS 站点。上表用 www.microsoft.com 仅展示字段格式，并非声称它适合每个环境。旧的 Oregon 配置也曾测试过其他 SNI；实际节点参数须以**当前面板**为准。
 
@@ -363,6 +378,8 @@ sudo x-ui status
 
 ### D. 端口可达但代理不通
 
+**先检查 REALITY → `Min Client Ver` 是否已明确填写 `1.0.0`**。这是本次部署实际遇到的关键遗漏项；不要和 `Max Client Ver` 混淆。
+
 分离定位四层：AWS SG / OS firewall → 服务器 TCP 443 是否监听 → Xray 入站和日志 → 客户端参数（UUID、REALITY 公钥、Short ID、SNI、flow、fp、地址）。不要仅凭 ping 或 Shadowrocket“延迟检测”判断业务 HTTPS 必然可用。
 
 ## 9. 在用节点维护：先备份，后改动
@@ -386,6 +403,7 @@ EC2：sudo -i → apt update → apt install -y curl ca-certificates
 Mac：ssh -N -L 18080:127.0.0.1:远端面板端口 ubuntu@公网 IP
 浏览器：http://127.0.0.1:18080/随机路径/
 面板：Add Inbound → VLESS → TCP/RAW → 443 → REALITY → Vision
+REALITY 关键补充：Min Client Ver 明确输入 1.0.0；Max Client Ver 留空
 生成：UUID、REALITY key pair、Short ID
 客户端：公网地址、443、UUID、SNI、Public Key、Short ID、chrome、Vision
 验收：ss 监听 443 → nc TCP 443 → 实际代理出口 → Google 204 / 业务网站
